@@ -6,7 +6,7 @@
 /*   By: Dscheffn <dscheffn@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/20 11:56:03 by Dscheffn          #+#    #+#             */
-/*   Updated: 2023/10/28 11:32:21 by Dscheffn         ###   ########.fr       */
+/*   Updated: 2023/10/28 14:48:37 by Dscheffn         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ char	*reader(int fd, char *remainder)
 	char	*buff;
 	int		bytes_reader;
 
+	if (read(fd, 0, 0) < 0)
+		return (free(remainder), NULL);
 	bytes_reader = 1;
 	buff = malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (buff == NULL)
@@ -49,15 +51,7 @@ char	*get_next_line(int fd)
 	if (remainder == NULL)
 		return (NULL);
 	line = line_grabber(remainder);
-	printf("line:%s\n", line);
 	remainder = remainder_refresh(remainder);
-	// printf("remainder:%s\n", remainder);
-	if (remainder != NULL && *remainder == '\0')
-	{
-		free(remainder);
-		remainder = NULL;
-	}
-	printf("remainder:%s\n", remainder);
 	return (line);
 }
 
@@ -78,8 +72,8 @@ char	*get_next_line(int fd)
 // 	// fd1 = open("tests/test.txt", O_RDONLY);
 // 	// fd2 = open("tests/test1.txt", O_RDONLY);
 // 	fd3 = open("tests/test2.txt", O_RDONLY);
-
-// 	while (i < 2)
+// 	printf("BUFFER_SIZE: %d\n", BUFFER_SIZE);
+// 	while (i < 5)
 // 	{
 // 		// line = get_next_line(fd1);
 // 		// printf("line1-%d: %s", i, line);
@@ -88,7 +82,7 @@ char	*get_next_line(int fd)
 // 		// printf("line2-%d: %s", i, line);
 // 		// free(line);
 // 		line = get_next_line(fd3);
-// 		// printf("line3-%d: %s", i, line);
+// 		printf("line3-%d: %s", i, line);
 // 		free(line);
 // 		i++;
 // 	}
