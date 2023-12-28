@@ -45,6 +45,8 @@ static size_t	c_occurences(char *s, char c)
 	}
 	if (in_word == 1)
 		occurences++;
+	if (0 == occurences)
+		exit(0);
 	return (occurences);
 }
 
