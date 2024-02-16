@@ -46,7 +46,7 @@ static size_t	c_occurences(char *s, char c)
 	if (in_word == 1)
 		occurences++;
 	if (0 == occurences)
-		exit(0);
+		return (0);
 	return (occurences);
 }
 
@@ -68,7 +68,7 @@ char	**ft_split(char const *s, char c)
 
 	counter = 0;
 	splitted_s = malloc(sizeof(char *) * (c_occurences((char *)s, c) + 1));
-	if (splitted_s == NULL)
+	if (splitted_s == NULL || (c_occurences((char *)s, c) == 0)
 		return (NULL);
 	while (*s != '\0')
 	{
