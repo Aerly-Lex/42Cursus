@@ -1,6 +1,12 @@
+NAME = libft.a
+
 CC = cc
 
+OBJ_DIR	= obj/
+
 CFLAGS = -Wall -Werror -Wextra -I.
+
+#######################################################################################
 
 SRC =	ft_atoi.c ft_bzero.c ft_calloc.c ft_isalnum.c ft_isalpha.c \
 		ft_isascii.c ft_isdigit.c ft_isprint.c ft_memchr.c ft_memcmp.c \
@@ -14,29 +20,36 @@ SRC =	ft_atoi.c ft_bzero.c ft_calloc.c ft_isalnum.c ft_isalpha.c \
 BONUS =	ft_lstnew.c ft_lstadd_front.c ft_lstsize.c ft_lstlast.c  ft_lstadd_back.c \
 		ft_lstdelone.c ft_lstclear.c ft_lstiter.c ft_lstmap.c
 
-NAME = libft.a
+EXTRA_UTILS = extra_utils/ft_fibonacci.c extra_utils/ft_sqrt.c extra_utils/ft_strcmp.c
 
-OBJ = $(SRC:.c=.o)
+#######################################################################################
 
-BONUS_OBJ = $(BONUS:.c=.o)
+OBJ = $(SRC:%.c=$(OBJ_DIR)%.o) $(EXTRA_UTILS:%.c=$(OBJ_DIR)%.o)
 
-%.o: %.c
-	$(CC) $(CFLAGS) -c $<
+BONUS_OBJ = $(BONUS:%.c=$(OBJ_DIR)%.o)
+
+$(OBJ_DIR)%.o: %.c
+	@mkdir -p $(@D)
+	$(CC) $(CFLAGS) -c $< -o $@
 
 $(NAME): $(OBJ)
 	ar rcs $(NAME) $(OBJ)
 
+#######################################################################################
+
 all: $(NAME)
 
-bonus: $(BONUS_OBJ)
-	ar rcs $(NAME) $(BONUS_OBJ)
+bonus: $(OBJ) $(BONUS_OBJ)
+	ar rcs $(NAME) $(OBJ) $(BONUS_OBJ)
 
 clean:
-	rm -f *.o
+	rm -f $(OBJ_DIR)*.o
+	rm -rf $(OBJ_DIR)
 
 fclean: clean
-	@rm -f $(NAME)
-	@rm -f $(BONUS_OBJ)
+	rm -f $(NAME)
 	@echo $(NAME) deleted
 
 re: fclean all
+
+.PHONY: all clean fclean re bonus
